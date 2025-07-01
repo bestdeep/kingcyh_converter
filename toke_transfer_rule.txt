@@ -1,0 +1,11 @@
+1. Token transfer rules
+- If the sender or receiver belongs to EXCLUDEPRICECHECK, transfer as is, ignore everything else.
+- If the WHITELIST function is activated, token transfer is not possible if the sender or receiver does not belong to the WHITELIST.
+- A token transfer time interval is set for the same sender.
+- If the sender or receiver belongs to the BLACKLIST, token transfer is not possible.
+- If the sender or receiver is a BMP violator, a penalty fee must be transferred to the HPRP POOL in order to transfer tokens. This is an additional fee.
+- If the current market price of the token is lower than the BMP, token transfer is not possible.
+- If the sender or receiver is not an exchange address, a fee is applied if the sender or receiver is not an asset holder.
+
+2. HPRP Winner Selection Method
+Determined using the last blockhash and the current blockhash.

@@ -1,0 +1,197 @@
+root@142-132-159-187 /home/suispin_contract # forge script script/deploy.s.sol:SpinGameScript --broadcast --rpc-url https://xusd.live --private-key 
+[⠒] Compiling...
+No files changed, compilation skipped
+Script ran successfully.
+
+## Setting up 1 EVM.
+Error: Failed to get EIP-1559 fees
+
+forge create src/Test.sol:Test \
+  --rpc-url https://xusd.live \
+  --private-key <your-private-key> \
+  --legacy --gas-limit 300000
+
+forge verify-contract \
+  --rpc-url https://xusd.live \
+  --verifier blockscout \
+  --verifier-url 'http://172.234.21.63:4000/api' \
+  --optimizer-runs 1000 \
+  --compiler-version v0.6.12+commit.27d51765 \
+  0x16Ea5443497EaD18b3eeEeAe3b655ec9E6933F56 \
+  src/SteamwheelerBobblehead.sol:SteamwheelerBobblehead \
+  --watch
+  
+
+forge verify-contract \
+  --rpc-url https://xusd.live \
+  --verifier blockscout \
+  --verifier-url 'https://xusdscan.com/api/' \
+  0xF3599e16C9E48293e7a7937a960E41E853Da9A77 \
+  src/SteamwheelerBobblehead.sol:SteamwheelerBobblehead
+
+
+journalctl -u explorer.service -f
+
+
+forge script ./scripts/deploy/deploy-fiat-token.s.sol:DeployFiatToken --broadcast --rpc-url=https://testapi.omaxray.com --legacy
+
+forge verify-contract \
+  --rpc-url https://testapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://testnet.omaxscan.com/api/' \
+  --compiler-version 0.6.12+commit.27d51765 \
+  --optimizer-runs 10000000 \
+  0xB14D43aDc83b65d110d118056671626c9282961c \
+  contracts/v2/FiatTokenV2_2.sol:FiatTokenV2_2 \
+  --watch
+  
+forge verify-contract \
+  --rpc-url https://testapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://testnet.omaxscan.com/api/' \
+  0xB14D43aDc83b65d110d118056671626c9282961c \
+  contracts/v2/FiatTokenV2_2.sol:FiatTokenV2_2 \
+  --watch
+
+cast tx 0xc07dfbfa40943a6f133524ce4444439d37b1956cab77e2410163ca550841e017 --rpc-url https://testapi.omaxray.com
+forge script ./scripts/deploy/deploy-fiat-token.s.sol:DeployFiatToken --broadcast --rpc-url=https://xusd.live --legacy
+
+forge verify-contract \
+  --rpc-url https://xusd.live \
+  --verifier blockscout \
+  --verifier-url 'http://xusdscan.com/api/' \
+  --compiler-version 0.6.12+commit.27d51765 \
+  --optimizer-runs 10000000 \
+  0x54C1ddbe1cFB689a98A2091D80372A4faE6a4cfF \
+  contracts/v2/FiatTokenV2_2.sol:FiatTokenV2_2 \
+  --watch
+
+
+forge verify-contract \
+  --rpc-url https://testapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://testnet.omaxscan.com/api/' \
+  0xDcA386d0E550b143Ba07B0f243c3C64d3A76a5E1 \
+  src/USDC.sol:StableTokenImplementation \
+  --watch
+  
+forge verify-contract \
+  --compiler-version 0.8.25+commit.b61c2a91 \
+  --chain-id 97 \
+  --optimizer-runs 200 \
+  0x2e1EaA73e2C466945397F49A98C0EB3b85ea7448 \
+  src/USDC.sol:StableTokenImplementation \
+  --etherscan-api-key MIQ2B1NB9WNVIN16P6EVC687UJDV65X78K \
+  --watch
+  
+cast abi-encode "constructor(address[],uint256)" "[0x137b52b0Fa7E21D17E6f8D412C92A31445FeF537]" 1
+cast abi-encode "constructor(uint256)" 1
+
+forge verify-contract \
+  --compiler-version 0.8.25+commit.b61c2a91 \
+  --chain-id 1 \
+  --optimizer-runs 200 \
+  0x72945f6673fA949982511D6d4D454C82BEeCeB4f \
+  src/BridgeStorage.sol:BridgeStorage \
+  --etherscan-api-key HFFTF9S3T7DMY41Y4PDR8RKAMY8BIKNG43 \
+  --constructor-args 0x0000000000000000000000005ad2a5f67677a07b1cc20aff65142235bc755fc3 \
+  --watch
+  
+forge verify-contract \
+  --compiler-version 0.8.25+commit.b61c2a91 \
+  --chain-id 1 \
+  --optimizer-runs 200 \
+  0x5ad2A5f67677a07b1CC20aFf65142235bc755fC3 \
+  src/BridgeLogic.sol:BridgeLogic \
+  --etherscan-api-key HFFTF9S3T7DMY41Y4PDR8RKAMY8BIKNG43 \
+  --constructor-args 0x0000000000000000000000002c37de5b35aba64bdebfa7472282a169339861c0 \
+  --watch
+  
+forge verify-contract \
+  --compiler-version 0.8.25+commit.b61c2a91 \
+  --chain-id 1 \
+  --optimizer-runs 200 \
+  0x2c37de5b35ABA64BDebfA7472282A169339861C0 \
+  src/Bridge.sol:Bridge \
+  --etherscan-api-key HFFTF9S3T7DMY41Y4PDR8RKAMY8BIKNG43 \
+  --constructor-args 0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000001e890c32d69c2a83bffdf1f2e90df0a0b9f3b1fa \
+  --watch
+  
+
+forge verify-contract \
+  --compiler-version 0.8.25+commit.b61c2a91 \
+  --chain-id 56 \
+  --optimizer-runs 200 \
+  0xB9Da4168dDb9B9aa3462fc5Ebf54e01f5E1619a5 \
+  src/BridgeStorage.sol:BridgeStorage \
+  --etherscan-api-key MIQ2B1NB9WNVIN16P6EVC687UJDV65X78K \
+  --constructor-args 0x0000000000000000000000008254f7214c628db1c8815c73942a6a8057e0291a \
+  --watch
+  
+forge verify-contract \
+  --compiler-version 0.8.25+commit.b61c2a91 \
+  --chain-id 56 \
+  --optimizer-runs 200 \
+  0x8254F7214C628Db1C8815C73942a6a8057e0291A \
+  src/BridgeLogic.sol:BridgeLogic \
+  --etherscan-api-key MIQ2B1NB9WNVIN16P6EVC687UJDV65X78K \
+  --constructor-args 0x00000000000000000000000098f48b373fd0cadaea14ae129056d5aa75ce8b8e \
+  --watch
+  
+forge verify-contract \
+  --compiler-version 0.8.25+commit.b61c2a91 \
+  --chain-id 56 \
+  --optimizer-runs 200 \
+  0x98F48b373FD0cAdAEA14Ae129056D5Aa75cE8b8e \
+  src/Bridge.sol:Bridge \
+  --etherscan-api-key MIQ2B1NB9WNVIN16P6EVC687UJDV65X78K \
+  --constructor-args 0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000001e890c32d69c2a83bffdf1f2e90df0a0b9f3b1fa \
+  --watch
+
+
+forge verify-contract \
+  --rpc-url https://mainapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://omaxscan.com/api/' \
+  0x4Cae56eCe3f722E001A85c976C103d5c77a86Dbf \
+  src/BridgeStorage.sol:BridgeStorage \
+  --watch
+  
+forge verify-contract \
+  --rpc-url https://mainapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://omaxscan.com/api/' \
+  0x6a13F608cc339f32bb3748b214D0746Ae292cD8b \
+  src/BridgeLogic.sol:BridgeLogic \
+  --watch
+  
+forge verify-contract \
+  --rpc-url https://mainapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://omaxscan.com/api/' \
+  0x72945f6673fA949982511D6d4D454C82BEeCeB4f \
+  src/Bridge.sol:Bridge \
+  --watch
+  
+cast abi-encode "constructor(address[],uint256)" "[0x1e890c32D69C2a83bffDf1f2E90DF0a0b9f3B1fa]" 1
+
+constructor(address tokenForStaking_, address tokenForRewards_, address admin_)
+
+cast nonce 0x1e890c32D69C2a83bffDf1f2E90DF0a0b9f3B1fa --rpc-url https://mainapi.omaxscan.com
+
+forge verify-contract \
+  --rpc-url https://mainapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://omaxscan.com/api/' \
+  0x1D7B10E99E98d21aeCcFFC3E2A65aBaa2bD0FC40 \
+  src/USDC.sol:StableTokenImplementation \
+  --watch
+  
+forge verify-contract \
+  --rpc-url https://mainapi.omaxray.com \
+  --verifier blockscout \
+  --verifier-url 'https://omaxscan.com/api/' \
+  0x1D7B10E99E98d21aeCcFFC3E2A65aBaa2bD0FC40 \
+  src/USDC.sol:StableTokenImplementation \
+  --force \
+  --watch

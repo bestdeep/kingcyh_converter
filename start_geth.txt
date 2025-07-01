@@ -1,0 +1,51 @@
+MasterNode
+
+#!/bin/bash
+# Define BOOTNODES variable
+BOOTNODES="enode://4fb43831b3f6e333548f4e31833db4eb952e76f611cacab23cae78aa2eb1bc01694f07f72c338291d6189c6afd40a6420875e045cd391ef93b0823372f52285f@172.234.21.63:30305,enode://18e48aae53d13f3d8e9782366165f596865e31dc2a99e1283f7d21c1315a2f2a01823c9e61256328be00e03a74d14f892d089f891fd060ac61d98e215db62c61@96.126.110.123:30305"
+ACCOUNT="0x580b9dc22644816D9f060A07b39bD835c9747a9e"
+PWD="/home/djordje/XUSD_ONE/config/pwd"
+
+# Run Geth with specified options
+geth --http \
+     --http.api eth,net,web3,debug,txpool \
+     --ws \
+     --ws.port 8546 \
+     --syncmode full \
+     --port 30305 \
+     --bootnodes $BOOTNODES \
+     --unlock $ACCOUNT \
+     --password $PWD \
+     --mine \
+     --miner.etherbase $ACCOUNT \
+     --allow-insecure-unlock \
+     --graphql \
+     --http.addr 0.0.0.0 \
+     --gcmode archive
+
+
+PeerNode
+
+#!/bin/bash
+# Define BOOTNODES variable
+BOOTNODES="enode://4fb43831b3f6e333548f4e31833db4eb952e76f611cacab23cae78aa2eb1bc01694f07f72c338291d6189c6afd40a6420875e045cd391ef93b0823372f52285f@172.234.21.63:30305,enode://18e48aae53d13f3d8e9782366165f596865e31dc2a99e1283f7d21c1315a2f2a01823c9e61256328be00e03a74d14f892d089f891fd060ac61d98e215db62c61@96.126.110.123:30305"
+ACCOUNT="0x526E02D5c1A4D8CB4CF93fD6Fc0045DD0932cd96"
+PWD="./config/pwd"
+
+# Run Geth with specified options
+geth --http \
+     --http.api eth,net,web3,debug,txpool \
+     --ws \
+     --ws.addr 0.0.0.0 \
+     --ws.port 8546 \
+     --syncmode full \
+     --port 30305 \
+     --bootnodes $BOOTNODES \
+     --unlock $ACCOUNT \
+     --password $PWD \
+     --mine \
+     --miner.etherbase $ACCOUNT \
+     --allow-insecure-unlock \
+     --graphql \
+     --http.addr 0.0.0.0 \
+     --gcmode archive

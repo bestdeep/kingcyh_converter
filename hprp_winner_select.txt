@@ -1,0 +1,80 @@
+package main
+
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"log"
+	"math/big"
+
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
+)
+
+// Example list of registered addresses (replace this with actual logic to fetch from a contract or database)
+var registeredAddresses = []common.Address{
+	common.HexToAddress("0x25107304D08dc8bD62f03FA38F98aeCc17a18160"),
+	common.HexToAddress("0x62dce4a8ea1a9a46917e1839a83ebc3e6cfbda74"),
+	common.HexToAddress("0xa16081f360e3847006db660bae1c6d1b2e17ec2a"),
+}
+
+func main() {
+	// Connect to the Ethereum node
+	client, err := ethclient.Dial("http://127.0.0.1:8545") // Replace with your Geth node URL
+	if err != nil {
+		log.Fatalf("Failed to connect to Ethereum client: %v", err)
+	}
+
+	// Ensure the list of addresses is not empty
+	if len(registeredAddresses) == 0 {
+		log.Fatal("No registered addresses found")
+	}
+
+	// Get the current block number
+	currentBlock, err := client.BlockByNumber(nil, nil)
+	if err != nil {
+		log.Fatalf("Failed to get the current block: %v", err)
+	}
+	blockNumber := currentBlock.Number()
+
+	// Fetch block hashes
+	hashOfLastBlock, err := getBlockHash(client, blockNumber.Uint64()-1)
+	if err != nil {
+		log.Fatalf("Failed to get the last block hash: %v", err)
+	}
+	hashOfCurrentBlock, err := getBlockHash(client, blockNumber.Uint64())
+	if err != nil {
+		log.Fatalf("Failed to get the current block hash: %v", err)
+	}
+
+	// Generate a pseudo-random index using the two block hashes
+	randomIndex := generateRandomIndex(hashOfLastBlock, hashOfCurrentBlock, len(registeredAddresses))
+
+	// Select the winner
+	winner := registeredAddresses[randomIndex]
+
+	fmt.Printf("Winner Address: %s\n", winner.Hex())
+}
+
+// getBlockHash retrieves the block hash for a given block number
+func getBlockHash(client *ethclient.Client, blockNumber uint64) (common.Hash, error) {
+	block, err := client.BlockByNumber(nil, big.NewInt(int64(blockNumber)))
+	if err != nil {
+		return common.Hash{}, err
+	}
+	return block.Hash(), nil
+}
+
+// generateRandomIndex creates a pseudo-random index based on two block hashes
+func generateRandomIndex(hash1, hash2 common.Hash, listLength int) int {
+	// Combine the two hashes
+	combinedHash := sha256.Sum256(append(hash1.Bytes(), hash2.Bytes()...))
+
+	// Convert the hash to a big integer
+	bigHash := new(big.Int).SetBytes(combinedHash[:])
+
+	// Calculate the index as the modulo of the list length
+	index := new(big.Int).Mod(bigHash, big.NewInt(int64(listLength)))
+	return int(index.Int64())
+}

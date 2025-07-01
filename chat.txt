@@ -1,0 +1,18 @@
+- HPRP
+How should HPRP winners be set?
+Or should the chain automatically set them according to its own logic?
+I am considering whether the backend and the chain should communicate in real time.
+If so, there may be a communication overhead.
+And when should the HPRP winners' rewards be sent?
+So, does this mean that the chain should pseudorandomly select a winner?
+That is, I should use current block hash and latest block hash?
+Then I will generate a pseudorandom number based on the block hash in the chain.
+
+The backend should communicate in realtime.
+We will use the controller to activate the selection of a winner quarterly.
+
+- And when should chain set whitelistEnabled?
+That is a feature that should be able to be enabled and disabled from .the backend controller as needed by staff.
+- Market Open&Close
+Pay attention to market open and market close.
+Feature that has to be there as well.

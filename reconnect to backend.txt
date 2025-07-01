@@ -1,0 +1,90 @@
+package main
+
+import (
+	"log"
+	"os"
+	"sync"
+	"time"
+
+	socketio "github.com/googollee/go-socket.io-client/v2/socketio"
+	"github.com/googollee/go-socket.io-client/v2/engineio"
+	"github.com/googollee/go-socket.io-client/v2/transport"
+)
+
+type AdminSettings struct{}
+
+var (
+	instance *AdminSettings
+	once     sync.Once
+)
+
+const AdminBaseWSS = "ws://127.0.0.1:4000/socket.io/" // Your backend WebSocket URL
+
+func connectSocketIO() {
+	for {
+		// Define options for the client
+		opts := &engineio.Options{
+			Transports: []transport.Transport{
+				polling.Default,
+				websocket.Default,
+			},
+		}
+
+		// Connect to the server
+		client, err := socketio.NewClient(AdminBaseWSS, opts)
+		if err != nil {
+			log.Println("Failed to connect to socketio server:", err)
+			time.Sleep(5 * time.Second) // Retry after 5 seconds
+			continue
+		}
+
+		log.Println("Socket.IO created!")
+
+		// Handle "connect" event
+		client.OnEvent("connect", func(_ socketio.Conn) {
+			log.Println("Successfully connected to the socketio server")
+		})
+
+		// Handle "update" event
+		client.OnEvent("update", func(_ socketio.Conn) {
+			log.Println("SocketIO: Received update event")
+			instance.load()
+		})
+
+		// Handle "disconnect" event and attempt reconnection
+		client.OnEvent("disconnect", func(_ socketio.Conn) {
+			log.Println("Disconnected from Socket.IO server, reconnecting...")
+			time.Sleep(5 * time.Second)
+			connectSocketIO()
+		})
+
+		// Attempt to connect
+		err = client.Connect()
+		if err != nil {
+			log.Println("Failed to establish connection:", err)
+			time.Sleep(5 * time.Second) // Retry after 5 seconds
+			continue
+		}
+
+		// Keep the connection alive
+		select {}
+	}
+}
+
+func GetAdminSettings() *AdminSettings {
+	once.Do(func() {
+		instance = &AdminSettings{}
+		go connectSocketIO() // Run socket connection in a separate goroutine
+		instance.load()
+	})
+	return instance
+}
+
+func (a *AdminSettings) load() {
+	log.Println("Admin settings loaded!")
+}
+
+func main() {
+	GetAdminSettings() // Start the WebSocket connection
+	select {}          // Prevent main from exiting
+}
